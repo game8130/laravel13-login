@@ -6,6 +6,7 @@ use App\Http\Controllers\User\UserController;
 
 
 // 顯示登入頁面
+Route::get('/', [LoginController::class, 'showLoginForm']);
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 // 處理登入請求
 Route::post('/login', [LoginController::class, 'login']);

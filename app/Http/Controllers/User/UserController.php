@@ -15,7 +15,7 @@ class UserController extends Controller
         $users = User::paginate(10);
 
         // 將 $users 傳遞到 dashboard 視圖
-        return view('dashboard', compact('users'));
+        return view('users.index', compact('users'));
     }
 
     public function store(Request $request)
@@ -47,11 +47,17 @@ class UserController extends Controller
             'email'    => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             // 密碼設為選填（nullable），有填才更新
             'password' => ['nullable', 'string', 'min:8'],
+            'post' => ['integer'],
+            'followers' => ['integer'],
+            'followings' => ['integer'],
         ]);
 
         // 2. 更新 basic 資料
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+        $user->post = $validated['post'];
+        $user->followers = $validated['followers'];
+        $user->followings = $validated['followings'];
 
         // 3. 如果有輸入新密碼才進行雜湊更新
         if (!empty($validated['password'])) {

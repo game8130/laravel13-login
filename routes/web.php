@@ -14,7 +14,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // 登入後才能進入的後台首頁範例
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [UserController::class, 'index'])->name('users.index');
     // 處理新增使用者的 POST 請求
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
     // 更新使用者資料的路由

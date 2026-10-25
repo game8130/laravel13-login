@@ -18,10 +18,14 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
+ * @property int $post
+ * @property int $followers
+ * @property int $followings
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password'])]
+
+#[Fillable(['name', 'email', 'password', 'post', 'followers', 'followings'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -38,6 +42,27 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'post' => 'integer',
+            'followers' => 'integer',
+            'followings' => 'integer',
         ];
+    }
+
+    public function getAvatarAttribute()
+    {
+        $path = 'assets/images/users/user-' . $this->id . '.jpg';
+
+        // 如果資料庫有 avatar 欄位，可以優先讀取資料庫
+        if ($this->attributes['avatar'] ?? false) {
+            return asset('storage/' . $this->attributes['avatar']);
+        }
+
+        // 否則檢查靜態檔案是否存在
+        if (file_exists(public_path($path))) {
+            return asset($path);
+        }
+
+        // 預設頭像
+        return asset('assets/images/users/user-1.jpg');
     }
 }

@@ -12,18 +12,37 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        // 建立查詢
-        $users = User::when($request->filled('search'), function ($query) use ($request) {
-                $search = $request->input('search');
-                // 模糊搜尋 name 欄位
-                $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('email', 'like', '%' . $search . '%');
-            })
-            ->paginate(10)
-            ->withQueryString(); // 讓分頁連結自動帶上搜尋參數
+        // 1. 建立基本查詢 Query Builder
+        $query = User::query();
 
-        // 將 $users 與目前的搜尋關鍵字傳遞到視圖（方便表單回填）
-        return view('users.index', compact('users'));
+        // 2. 處理搜尋條件（使用 Closure 包覆 orWhere，確保 SQL 括號正確）
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        // 3. 一次性計算所有總計數據（利用資料庫聚合函式，減少查詢次數）
+        $totals = (clone $query)->selectRaw('
+            count(*) as users_total,
+            sum(post) as post_total,
+            sum(followers) as followers_total,
+            sum(followings) as followings_total
+        ')->first();
+
+        // 4. 取得分頁資料
+        $users = $query->paginate(10)->withQueryString();
+
+        // 5. 傳遞變數到視圖
+        return view('users.index', [
+            'users' => $users,
+            'users_total' => $totals->users_total ?? 0,
+            'post_total' => $totals->post_total ?? 0,
+            'followers_total' => $totals->followers_total ?? 0,
+            'followings_total' => $totals->followings_total ?? 0,
+        ]);
     }
 
     public function store(Request $request)

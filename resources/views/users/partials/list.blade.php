@@ -17,7 +17,78 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-lg-6 col-xl-3">
+        <div class="card-box bg-pattern">
+            <div class="row">
+                <div class="col-6">
+                    <div class="avatar-md bg-blue rounded">
+                        <i class="fe-users avatar-title font-22 text-white"></i>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="text-right">
+                        <h3 class="text-dark my-1"><span data-plugin="counterup">{{ $users_total }}</span></h3>
+                        <p class="text-muted mb-0 text-truncate">總使用者</p>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end card-box-->
+    </div> <!-- end col -->
 
+    <div class="col-lg-6 col-xl-3">
+        <div class="card-box bg-pattern">
+            <div class="row">
+                <div class="col-6">
+                    <div class="avatar-md bg-success rounded">
+                        <i class=" fe-align-justify avatar-title font-22 text-white"></i>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="text-right">
+                        <h3 class="text-dark my-1"><span data-plugin="counterup">{{ $post_total }}</span></h3>
+                        <p class="text-muted mb-0 text-truncate">總貼文數</p>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end card-box-->
+    </div> <!-- end col -->
+    <div class="col-lg-6 col-xl-3">
+        <div class="card-box bg-pattern">
+            <div class="row">
+                <div class="col-6">
+                    <div class="avatar-md bg-danger rounded">
+                        <i class="fe-heart-on avatar-title font-22 text-white"></i>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="text-right">
+                        <h3 class="text-dark my-1"><span data-plugin="counterup">{{ $followers_total }}</span></h3>
+                        <p class="text-muted mb-0 text-truncate">總追隨者</p>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end card-box-->
+    </div> <!-- end col -->
+    <div class="col-lg-6 col-xl-3">
+        <div class="card-box bg-pattern">
+            <div class="row">
+                <div class="col-6">
+                    <div class="avatar-md bg-warning rounded">
+                        <i class="fe-star-on avatar-title font-22 text-white"></i>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="text-right">
+                        <h3 class="text-dark my-1"><span data-plugin="counterup">{{ $followings_total }}</span></h3>
+                        <p class="text-muted mb-0 text-truncate">總追蹤者</p>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end card-box-->
+    </div> <!-- end col -->
+</div>
+<!-- end row-->
 <div class="row">
     @forelse ($users as $user)
         <div class="col-lg-4"><div class="text-center card-box"><div class="pt-2 pb-2">

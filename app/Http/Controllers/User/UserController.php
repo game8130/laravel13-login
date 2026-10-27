@@ -10,11 +10,19 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
+        // 建立查詢
+        $users = User::when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->input('search');
+                // 模糊搜尋 name 欄位
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            })
+            ->paginate(10)
+            ->withQueryString(); // 讓分頁連結自動帶上搜尋參數
 
-        // 將 $users 傳遞到 dashboard 視圖
+        // 將 $users 與目前的搜尋關鍵字傳遞到視圖（方便表單回填）
         return view('users.index', compact('users'));
     }
 
